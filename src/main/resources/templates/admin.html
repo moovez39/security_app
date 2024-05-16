@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin apge</title>
+</head>
+<body>
+<h1>Admin page</h1>
+<table border="1" style="border: black">
+    <tr>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Sex</th>
+        <th>Email</th>
+        <th>Roles</th>
+        <th>Option</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.getUsername()}"></td>
+        <td th:text="${user.getPassword()}"></td>
+        <td th:text="${user.getSex()}"></td>
+        <td th:text="${user.getEmail()}"></td>
+        <td th:text= "*{user.getRoles()}"></td>
+    </tr>
+</table>
+<br/>
+<button th:action="@{/logout}" name="Log out" value="Log out"></button>
+</body>
+</html>
