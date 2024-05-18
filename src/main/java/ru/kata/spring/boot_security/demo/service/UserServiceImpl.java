@@ -13,15 +13,23 @@ import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
+    private final Role user_role;
+    private Role admin_role;
+
+
+
     @Autowired
     UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.user_role = new Role("ROLE_USER");
+        this.admin_role= new Role("ROLE_ADMIN");
     }
 
     @Override
@@ -36,7 +44,7 @@ public class UserServiceImpl implements UserDetailsService {
             return false;
         }
         user.setUsername(user.getUsername());
-        user.setRoles(Collections.singleton(new Role("ROLE_USER")));
+        user.getAuthorities().add(user_role);
         user.setPassword(user.getPassword());
         user.setSex(user.getSex());
         user.setEmail(user.getEmail());

@@ -10,10 +10,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
 @Table(name = "user")
+
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,9 +36,10 @@ public class User implements UserDetails {
     @Email(message = "Email is invalid")
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name="user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+//    @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles;
 
 
@@ -54,8 +57,12 @@ public class User implements UserDetails {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        if (roles == null) {
+            roles = new HashSet<Role>();
+        } else {
+            roles.add(role);
+        }
     }
 
     @Override

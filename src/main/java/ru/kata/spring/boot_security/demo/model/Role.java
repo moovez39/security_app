@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.Set;
 
 
@@ -18,6 +19,14 @@ public class Role implements GrantedAuthority {
     @Column(unique = true)
     @NotNull
     String role_name;
+
+//
+////    @ManyToMany(cascade = CascadeType.ALL)
+////    @JoinTable(name = "user_roles")
+//    @Transient
+//    @ManyToMany(mappedBy = "roles",cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 
 
     public Role(String role_name) {

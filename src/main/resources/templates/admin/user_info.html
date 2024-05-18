@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" >
+<head>
+    <title>Spring Security Example</title>
+</head>
+<body>
+<h1>User, welcome spring boot security page!</h1>
+<br/>
+<h2>User info</h2>
+<h3>Username <input type="text" th:value="${user.getUsername()}" ></h3>
+<h3>Email <input type="text" th:value="${user.getEmail()}" ></h3>
+<h3>Sex <input type="text" th:value="${user.getSex()}" ></h3>
+
+</body>
+</html>

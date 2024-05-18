@@ -30,19 +30,18 @@ public class UserController {
 
     }
 
-    @GetMapping("/register")
+    @GetMapping("/registration")
     public String registerUser(Model model) {
         model.addAttribute("new_user", new User());
-        System.out.println("test");
         return "register";
     }
 
-    @PostMapping("/register_user")
+    @PostMapping("/registration")
     public String addUser(@ModelAttribute("new_user") User new_user) {
 //        new_user.getRoles().add(new Role("ROLE_USER"));
         userService.saveUser(new_user);
         System.out.println("test");
-        return "redirect:/user";
+        return "redirect:/index";
     }
 }
 
