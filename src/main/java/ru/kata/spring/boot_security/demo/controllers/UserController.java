@@ -2,6 +2,8 @@ package ru.kata.spring.boot_security.demo.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 import java.security.Principal;
 
 @Controller
+@Secured("ADMIN")
 public class UserController {
     private final UserServiceImpl userService;
 
@@ -26,6 +29,7 @@ public class UserController {
     @GetMapping("/user")
     public String user(Model model, Principal principal) {
         model.addAttribute("user", userService.loadUserByUsername(principal.getName()));
+        System.out.println(userService.loadUserByUsername(principal.getName()).getAuthorities());
         return "/user";
 
     }

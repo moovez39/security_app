@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -36,14 +37,20 @@ public class User implements UserDetails {
     @Email(message = "Email is invalid")
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinTable(name="user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-//    @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<Role> roles;
+//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Role> roles;
+
+
 
 
     public User() {
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public User(String username, String password, char sex, String email) {
@@ -53,16 +60,12 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public Collection<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRole(Role role) {
-        if (roles == null) {
-            roles = new HashSet<Role>();
-        } else {
-            roles.add(role);
-        }
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
@@ -104,9 +107,7 @@ public class User implements UserDetails {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+
 
     public void setUsername(String username) {
         this.username = username;
@@ -114,6 +115,18 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", sex=" + sex +
+                ", email='" + email + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 
     public char getSex() {

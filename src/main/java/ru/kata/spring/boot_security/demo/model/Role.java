@@ -4,8 +4,6 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
-import java.util.Set;
 
 
 @Entity
@@ -18,19 +16,19 @@ public class Role implements GrantedAuthority {
 
     @Column(unique = true)
     @NotNull
-    String role_name;
+    String roleName;
 
-//
+    //
 ////    @ManyToMany(cascade = CascadeType.ALL)
 ////    @JoinTable(name = "user_roles")
 //    @Transient
 //    @ManyToMany(mappedBy = "roles",cascade = CascadeType.ALL)
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+//    @OneToMany(mappedBy = "roles")
+//    private Set<User> users;
 
 
     public Role(String role_name) {
-        this.role_name = role_name;
+        this.roleName = role_name;
     }
 
 
@@ -40,19 +38,19 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return role_name;
+        return roleName;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    public String getRole_name() {
-        return role_name;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setRole_name(String role_name) {
-        this.role_name = role_name;
+    public void setRoleName(String role_name) {
+        this.roleName = role_name;
     }
 
     public Role() {
@@ -61,6 +59,9 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return role_name;
+        return roleName;
     }
 }
+
+//___________________________________________________________
+
