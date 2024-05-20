@@ -4,17 +4,23 @@
     <title>Spring Security Example</title>
 </head>
 <body>
-<form method="POST"   th:action="@{edit_user/{id}(id=*{id})}" th:object="${user}">
+<form method="POST" th:action="@{edit_user/{id}(id=*{id})}" th:object="${user}">
     <h1>User, welcome spring boot security page! </h1>
     <br/>
     <h2>User info</h2>
-    <input type="input" th:field="*{id}" th:value="*{id}">
+    <!--    <input type="input" th:field="*{id}" th:value="*{id}">-->
     <h3>Username <input type="text" th:field="*{username}"></h3>
     <h3>Password <input type="text" th:field="*{password}"></h3>
     <h3>Email <input type="text" th:field="*{email}"></h3>
     <h3>Sex <input type="text" th:field="*{sex}"></h3>
-    <input type="hidden" th:field="*{roles}" th:value="*{roles}">
-<!--    <h3>Roles <input type="text" th:value="*{roles}" th:field="*{roles}"> </h3>-->
+<!--    <input type="hidden" th:field="*{roles}" th:each="role :${user.getRoles()}">-->
+    <br/>
+    <b> Roles:
+        <th:block th:each="role : ${roles}">
+            <input type="checkbox" th:field="*{roles}" th:text="${role.roleName}" th:value="${role.id}">
+        </th:block>
+    </b>
+    <br/>
     <input type="submit">
 </form>
 </body>

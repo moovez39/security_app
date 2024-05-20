@@ -18,14 +18,6 @@ public class Role implements GrantedAuthority {
     @NotNull
     String roleName;
 
-    //
-////    @ManyToMany(cascade = CascadeType.ALL)
-////    @JoinTable(name = "user_roles")
-//    @Transient
-//    @ManyToMany(mappedBy = "roles",cascade = CascadeType.ALL)
-//    @OneToMany(mappedBy = "roles")
-//    private Set<User> users;
-
 
     public Role(String role_name) {
         this.roleName = role_name;

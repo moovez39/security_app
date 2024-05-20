@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.model;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 
@@ -9,10 +10,7 @@ import javax.validation.Constraint;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "user")
@@ -37,14 +35,18 @@ public class User implements UserDetails {
     @Email(message = "Email is invalid")
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-    @JoinTable(name="user_roles", joinColumns = @JoinColumn(name = "user_id"),
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
-
-
+    public User(long id, String username, String password, char sex, String email, Set<Role> roles) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.sex = sex;
+        this.email = email;
+    }
 
     public User() {
     }
@@ -53,15 +55,11 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public User(String username, String password, char sex, String email) {
-        this.username = username;
-        this.password = password;
-        this.sex = sex;
-        this.email = email;
-    }
-
     public Set<Role> getRoles() {
         return roles;
+    }
+    public void addRole(Role role){
+        this.roles.add(role);
     }
 
     public void setRoles(Set<Role> roles) {
@@ -70,7 +68,13 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+        Set<Role> roles = getRoles();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        }
+        return authorities;
     }
 
     @Override
@@ -106,7 +110,6 @@ public class User implements UserDetails {
     public long getId() {
         return id;
     }
-
 
 
     public void setUsername(String username) {

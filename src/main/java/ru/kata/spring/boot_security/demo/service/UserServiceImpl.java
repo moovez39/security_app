@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +27,13 @@ public class UserServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
+    @Value("${spring.security.user.name}")
+    private String adminUsername;
+    @Value("${spring.security.user.password}")
+    private String adminPassword;
+    @Value("${spring.security.user.roles}")
+    private String adminRole;
+
     @PersistenceContext
     EntityManager entityManager;
 
@@ -46,54 +54,22 @@ public class UserServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if (username.equals(adminUsername)) {
+            return org.springframework.security.core.userdetails.User.builder().username(adminUsername)
+                    .password(adminPassword).roles(adminRole).build();
+        }
         return userRepository.findByUsername(username);
     }
 
-    public void saveUser(User user) {
-//        User userToUpdate = userRepository.findByUsername(user.getUsername());
-//        System.out.println(userToUpdate.getId());
 
-//        if (userToUpdate != null) {
-//            userRepository.s
-        if (userRepository.findByUsername(user.getUsername()) != null) {
+    public void saveUser(User user) {
+        Optional<User> userFromDB = userRepository.findById(user.getId());
+        if (userFromDB.isEmpty()) {
+            user.addRole(roleRepository.getById(1L));
             userRepository.save(user);
         } else {
-            user.setRoles(Collections.singleton(roleRepository.getById(1L)));
             userRepository.save(user);
         }
-    }
-//        user.setRoles(Collections.singleton(new Role("ROLE_USER")));
-//        user.setRoles(Collections.singleton(roleRepository.getById(1L)));
-
-//        user.setUsername(user.getUsername());
-//        user.setPassword(user.getPassword());
-//        user.setSex(user.getSex());
-//        user.setEmail(user.getEmail());
-//        userRepository.save(user);
-//        return true;
-//    }
-//    public void saveUser(User user) {
-//        System.out.println(user);
-//        if (!userRepository.existsById(user.getId())) {
-//            userRepository.save(user);
-//        } else {
-//            user.setRoles(Collections.singleton(roleRepository.getById(1L)));
-//            userRepository.save(user);
-//        }
-//    }
-
-
-    public void editUser(User user, Long id) {
-        System.err.println(user);
-        System.err.println(user.getUsername());
-        User userToEdit = userRepository.getById(id);
-        System.err.println(userToEdit);
-        userToEdit.setRoles(user.getRoles());
-        userToEdit.setEmail(user.getEmail());
-        userToEdit.setUsername(user.getUsername());
-        userToEdit.setSex(user.getSex());
-        userToEdit.setPassword(user.getPassword());
-        userRepository.save(userToEdit);
     }
 
     public void deleteUser(Long id) {

@@ -4,12 +4,12 @@
     <title>Spring Security Example</title>
 </head>
 <body>
-<form method="POST" th:action="@{registraion}" th:object="${new_user}">
+<form method="POST" th:action="@{create_user}" th:object="${user}">
     <h1> Create new user </h1>
     <br/>
     <h2>User info</h2>
     <h3>Username <input type="text" th:field="*{username}"></h3>
-    <h3>Password <input type="password" th:field="*{password}"></h3>
+    <h3>Password <input type="text" th:field="*{password}"></h3>
     <h3>Email <input type="text" th:field="*{email}"></h3>
     <b>Sex</b>
     <label for="male">Male</label>
@@ -20,7 +20,6 @@
     <br>
     <br>
     <input type="submit">
-    <a href="/"> Go to index page</a>
 </form>
 </body>
 </html>

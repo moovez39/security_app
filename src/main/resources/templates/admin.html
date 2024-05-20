@@ -20,19 +20,24 @@
         <td th:text="${user.getPassword()}"></td>
         <td th:text="${user.getSex()}"></td>
         <td th:text="${user.getEmail()}"></td>
-        <td th:text= "*{user.getRoles()}"></td>
+        <td th:text= "*{user.getAuthorities()}"></td>
         <td>
             <form th:method="GET"  th:action="@{user/{id}(id=${user.getId()})}" th:object="${user} ">
-                <input type="submit" >
+                <input type="submit" value="Edit user" >
             </form>
             <form method="POST" th:action="@{remove_user/{id}(id=${user.getId()})}" th:object="${user}">
-                <input type="submit" value="delete" name="delete">
+                <input type="submit" value="Delete User">
             </form>
         </td>
     </tr>
 </table>
 <br/>
-<input type="submit"  th:href="@{/create_user}" value="Create new user">
 <a th:href="@{create_user}">Create new user</a>
+<br/>
+<a th:href="@{/user}">User info</a>
+<br/>
+<a th:href="@{/logout}">Logout</a>
+<br/>
+
 </body>
 </html>
