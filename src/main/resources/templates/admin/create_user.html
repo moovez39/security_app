@@ -8,14 +8,23 @@
     <h1> Create new user </h1>
     <br/>
     <h2>User info</h2>
+
     <h3>Username <input type="text" th:field="*{username}"></h3>
+    <div style="color: red" th:if="*{#fields.hasErrors('username')}" th:errors="*{username}"></div>
+
     <h3>Password <input type="text" th:field="*{password}"></h3>
+    <div style="color: red" th:if="*{#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
     <h3>Email <input type="text" th:field="*{email}"></h3>
+    <div style="color: red" th:if="*{#fields.hasErrors('email')}" th:errors="*{email}"></div>
+
     <b>Sex</b>
     <label for="male">Male</label>
     <input type="radio" value="m" id="male" th:field="*{sex}" name="sex">
     <label for="female">Female</label>
     <input type="radio" value="f" id="female" th:field="*{sex}" name="sex">
+    <div style="color: red" th:if="*{#fields.hasErrors('sex')}" th:errors="*{sex}"></div>
+
     <br>
     <br>
     <br>
