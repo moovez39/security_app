@@ -9,6 +9,8 @@ import javax.persistence.*;
 import javax.validation.Constraint;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
 
@@ -21,17 +23,20 @@ public class User implements UserDetails {
     private long id;
 
     @Column(unique = true)
-    @Size(min = 5, max = 32, message = "username should be from 5 to 32 symbols")
+    @NotEmpty(message = "Name shouldn't be empty.")
+    @Size(min = 5, max = 32, message = "username should be from 5 to 32 symbols.")
     private String username;
 
     @Column
-    @Size(min = 6, max = 64, message = "Password should contains at least 8 characters")
+    @Size(min = 6, max = 64, message = "Password should contains at least 8 characters.")
     private String password;
 
     @Column(nullable = false)
+    @NotNull(message = "You should choose your sex.")
     private char sex;
 
     @Column(unique = true)
+    @NotEmpty(message = "Email shouldn't be empty")
     @Email(message = "Email is invalid")
     private String email;
 

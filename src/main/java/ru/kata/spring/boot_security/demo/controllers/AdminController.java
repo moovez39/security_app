@@ -2,9 +2,9 @@ package ru.kata.spring.boot_security.demo.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -12,7 +12,7 @@ import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
-import java.security.Principal;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -33,7 +33,7 @@ public class AdminController {
     @GetMapping("/")
     public String adminPage(Model model) {
         model.addAttribute("users", userService.getAllUsers());
-        return "admin";
+        return "admin/admin";
     }
 
     @GetMapping("/user/{id}")
@@ -46,10 +46,18 @@ public class AdminController {
     }
 
 
+    @GetMapping("/create_user")
+    public String createUserPage(Model model) {
+        model.addAttribute("user", new User());
+        return "admin/create_user";
+    }
+
     @PostMapping("user/edit_user/{id}")
-    public String editUser(@ModelAttribute("user") User editedUser, @ModelAttribute("roles") List<Role> roles,
-                           @PathVariable Long id) {
-        System.out.println(editedUser);
+    public String editUser(@ModelAttribute("roles") List<Role> roles, @PathVariable Long id,
+                           @ModelAttribute("user") @Valid User editedUser,BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return "admin/user_info";
+        }
         userService.saveUser(editedUser);
         return "redirect:/admin/";
 
@@ -61,14 +69,11 @@ public class AdminController {
         return "redirect:/admin/";
     }
 
-    @GetMapping("/create_user")
-    public String createUserPage(Model model) {
-        model.addAttribute("user", new User());
-        return "admin/create_user";
-    }
-
     @PostMapping("/create_user")
-    public String createUser(@ModelAttribute("user") User user) {
+    public String createUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return "admin/create_user";
+        }
         userService.saveUser(user);
         System.out.println(user);
         return "redirect:/admin/";

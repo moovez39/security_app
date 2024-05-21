@@ -4,6 +4,7 @@ package ru.kata.spring.boot_security.demo.controllers;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,10 +12,10 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
-@Secured("ADMIN")
 public class UserController {
     private final UserServiceImpl userService;
     private final UserRepository userRepository;
@@ -39,9 +40,10 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("new_user") User new_user) {
+    public String addUser(@ModelAttribute("new_user") @Valid User new_user, BindingResult bindingResult) {
+        if(bindingResult.hasErrors())
+            return "register";
         userService.saveUser(new_user);
-        System.out.println("test");
         return "redirect:/";
     }
 }
