@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
-@Secured("ADMIN")
+//@Secured("ADMIN")
 public class UserController {
     private final UserServiceImpl userService;
     private final UserRepository userRepository;

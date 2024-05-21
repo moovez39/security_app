@@ -19,13 +19,11 @@ import java.util.List;
 @RequestMapping("/admin/")
 public class AdminController {
     private final UserServiceImpl userService;
-    private final UserRepository userRepository;
     private final RoleRepository roleRepo;
 
     @Autowired
     public AdminController(UserServiceImpl userService, UserRepository userRepository, RoleRepository roleRepo) {
         this.userService = userService;
-        this.userRepository = userRepository;
         this.roleRepo = roleRepo;
     }
 
@@ -37,7 +35,7 @@ public class AdminController {
     }
 
     @GetMapping("/user/{id}")
-    public String userInfo(@PathVariable(name = "id") Long id, Model model) {
+    public String userInfo(@PathVariable Long id, Model model) {
         model.addAttribute("roles", roleRepo.findAll());
         model.addAttribute("user", userService.getUser(id));
         User user = (User) model.getAttribute("user");
@@ -49,13 +47,16 @@ public class AdminController {
     @GetMapping("/create_user")
     public String createUserPage(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("roles", roleRepo.findAll());
         return "admin/create_user";
     }
 
-    @PostMapping("/edit_user/{id}")
+    @PostMapping("/user/{id}")
     public String editUser(@Valid User editedUser,
-                           BindingResult bindingResult, @PathVariable Long id,@ModelAttribute("roles") List<Role> roles) {
+                           BindingResult bindingResult, @PathVariable Long id,@ModelAttribute("roles") List<Role> roles, Model model) {
+
         if (bindingResult.hasErrors()) {
+            model.addAttribute("roles", roleRepo.findAll());
             return "/admin/user_info";
         }
         userService.saveUser(editedUser);

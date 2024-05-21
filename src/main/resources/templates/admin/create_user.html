@@ -5,10 +5,10 @@
 </head>
 <body>
 <form method="POST" th:action="@{create_user}" th:object="${user}">
-    <h1> Create new user </h1>
+    <h1>User, welcome spring boot security page! </h1>
     <br/>
     <h2>User info</h2>
-
+    <!--    <input type="input" th:field="*{id}" th:value="*{id}">-->
     <h3>Username <input type="text" th:field="*{username}"></h3>
     <div style="color: red" th:if="*{#fields.hasErrors('username')}" th:errors="*{username}"></div>
 
@@ -18,16 +18,23 @@
     <h3>Email <input type="text" th:field="*{email}"></h3>
     <div style="color: red" th:if="*{#fields.hasErrors('email')}" th:errors="*{email}"></div>
 
-    <b>Sex</b>
+    <!--    <h3>Sex <input type="text" th:field="*{sex}"></h3>-->
+    <b>Choose sex</b>
     <label for="male">Male</label>
     <input type="radio" value="m" id="male" th:field="*{sex}" name="sex">
     <label for="female">Female</label>
     <input type="radio" value="f" id="female" th:field="*{sex}" name="sex">
     <div style="color: red" th:if="*{#fields.hasErrors('sex')}" th:errors="*{sex}"></div>
+    <br/>
+    <br/>
+    <label for="roles">Roles:</label>
+    <th:block th:each="role : ${roles}">
+        <input type="checkbox" th:field="*{roles}" th:text="${role.roleName}" th:value="${role.id}" id="roles">
+        <div style="color: red" th:if="*{#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
+        <br/>
 
-    <br>
-    <br>
-    <br>
+    </th:block>
+    <br/>
     <input type="submit">
 </form>
 </body>

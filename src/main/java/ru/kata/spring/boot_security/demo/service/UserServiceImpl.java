@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -23,9 +24,10 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserDetailsService {
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${spring.security.user.name}")
     private String adminUsername;
@@ -39,7 +41,8 @@ public class UserServiceImpl implements UserDetailsService {
 
 
     @Autowired
-    UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
         if (!roleRepository.existsByRoleName("ROLE_USER")) {
             roleRepository.save(new Role("ROLE_USER"));
         }
@@ -56,7 +59,7 @@ public class UserServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username.equals(adminUsername)) {
             return org.springframework.security.core.userdetails.User.builder().username(adminUsername)
-                    .password(adminPassword).roles(adminRole).build();
+                    .password(passwordEncoder.encode(adminPassword)).roles(adminRole).build();
         }
         return userRepository.findByUsername(username);
     }
@@ -65,10 +68,13 @@ public class UserServiceImpl implements UserDetailsService {
     public void saveUser(User user) {
         Optional<User> userFromDB = userRepository.findById(user.getId());
         if (userFromDB.isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.addRole(roleRepository.getById(1L));
             userRepository.save(user);
         } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
+
         }
     }
 

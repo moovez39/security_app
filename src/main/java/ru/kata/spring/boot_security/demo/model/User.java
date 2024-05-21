@@ -24,7 +24,7 @@ public class User implements UserDetails {
     private String username;
 
     @Column
-    @Size(min = 6, max = 64, message = "Password should contains at least 8 characters")
+    @Size(min = 6, max = 64, message = "Password should contains at least 6 characters")
     private String password;
 
     @Column(nullable = false)
@@ -36,10 +36,9 @@ public class User implements UserDetails {
     @NotBlank(message = "Email shouldn't be empty")
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @Size(message = "The user must have at least one role", min = 1)
     private Set<Role> roles = new HashSet<>();
 
     public User(long id, String username, String password, char sex, String email, Set<Role> roles) {
