@@ -4,40 +4,115 @@
     <meta charset="UTF-8">
     <title>Admin apge</title>
 </head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+      integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 <body>
-<h1>Admin page</h1>
-<table border="1" style="border: black">
-    <tr>
-        <th>Username</th>
-        <th>Password</th>
-        <th>Sex</th>
-        <th>Email</th>
-        <th>Roles</th>
-        <th>Option</th>
-    </tr>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.getUsername()}"></td>
-        <td th:text="${user.getPassword()}"></td>
-        <td th:text="${user.getSex()}"></td>
-        <td th:text="${user.getEmail()}"></td>
-        <td th:text= "*{user.getAuthorities()}"></td>
-        <td>
-            <form th:method="GET"  th:action="@{user/{id}(id=${user.getId()})}" th:object="${user} ">
-                <input type="submit" value="Edit user" >
-            </form>
-            <form method="POST" th:action="@{remove_user/{id}(id=${user.getId()})}" th:object="${user}">
-                <input type="submit" value="Delete User">
-            </form>
-        </td>
-    </tr>
-</table>
-<br/>
-<a th:href="@{create_user}">Create new user</a>
-<br/>
-<a th:href="@{/user}">User info</a>
-<br/>
-<a th:href="@{/logout}">Logout</a>
-<br/>
+<nav class="navbar sticky-top navbar-light bg-dark">
+    <div class="container-fluid">
+        <!--        ssadads-->
+        <th:block>
+            <p th:text="${users}" style="color: white"></p>
+        </th:block>
+        <!--        <input type="text" class="navbar-brand">Sticky top</input>-->
+        <!--        asdasdda-->
+    </div>
+</nav>
+<div class="d-flex align-items-start">
+    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" href="#v-pills-home" role="tab"
+           aria-controls="v-pills-home" aria-selected="true">Home</a>
+        <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" href="#v-pills-profile" role="tab"
+           aria-controls="v-pills-profile" aria-selected="false">Profile</a>
+        <a class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" href="#v-pills-messages" role="tab"
+           aria-controls="v-pills-messages" aria-selected="false">Messages</a>
+        <a class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" href="#v-pills-settings" role="tab"
+           aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+    </div>
+    <div class="tab-content" id="v-pills-tabContent">
+        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+             aria-labelledby="v-pills-home-tab"></div>
+        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab"></div>
+        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab"></div>
+        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab"></div>
+    </div>
+    <div>
+        <h2>Admin page</h2>
+        <br/>
+        <nav class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab"
+               aria-controls="nav-home" aria-selected="true">Users table</a>
+            <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab"
+               aria-controls="nav-profile" aria-selected="false">Profile</a>
+            <!--            <a class="nav-link disabled" id="nav-disabled-tab" data-bs-toggle="tab" href="#nav-disabled" role="tab" aria-controls="nav-disabled" tabindex="-1" aria-disabled="true">Disabled</a>-->
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+<!--                <table>-->
+<!--                    <tr>-->
+<!--                        <th>Username</th>-->
+<!--                        <th>Password</th>-->
+<!--                        <th>Sex</th>-->
+<!--                        <th>Email</th>-->
+<!--                        <th>Roles</th>-->
+<!--                        <th>Option</th>-->
+<!--                    </tr>-->
+<!--                    <tr th:each="user : ${users}">-->
+<!--                        <td th:text="${user.getUsername()}"></td>-->
+<!--                        <td th:text="${user.getPassword()}"></td>-->
+<!--                        <td th:text="${user.getSex()}"></td>-->
+<!--                        <td th:text="${user.getEmail()}"></td>-->
+<!--                        <td th:text="*{user.getAuthorities()}"></td>-->
+<!--                        <td>-->
+<!--                            <form th:method="GET" th:action="@{user/{id}(id=${user.getId()})}" th:object="${user} ">-->
+<!--                                <input type="submit" value="Edit user">-->
+<!--                            </form>-->
+<!--                            <form method="POST" th:action="@{remove_user/{id}(id=${user.getId()})}" th:object="${user}">-->
+<!--                                <input type="submit" value="Delete User">-->
+<!--                            </form>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                </table>-->
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">Lorem ipsum
+                dolor sit amet, consectetur adipisicing elit. Magni, natus sed soluta necessitatibus tempore aspernatur?
+                Praesentium, odit explicabo distinctio dolore adipisci officia iure, ut magnam optio aliquam at
+                similique veritatis.
+            </div>
 
+            <!--        </div>-->
+            <!--        <table border="1" style="border: black">-->
+            <!--            <tr>-->
+            <!--                <th>Username</th>-->
+            <!--                <th>Password</th>-->
+            <!--                <th>Sex</th>-->
+            <!--                <th>Email</th>-->
+            <!--                <th>Roles</th>-->
+            <!--                <th>Option</th>-->
+            <!--            </tr>-->
+            <!--            <tr th:each="user : ${users}">-->
+            <!--                <td th:text="${user.getUsername()}"></td>-->
+            <!--                <td th:text="${user.getPassword()}"></td>-->
+            <!--                <td th:text="${user.getSex()}"></td>-->
+            <!--                <td th:text="${user.getEmail()}"></td>-->
+            <!--                <td th:text="*{user.getAuthorities()}"></td>-->
+            <!--                <td>-->
+            <!--                    <form th:method="GET" th:action="@{user/{id}(id=${user.getId()})}" th:object="${user} ">-->
+            <!--                        <input type="submit" value="Edit user">-->
+            <!--                    </form>-->
+            <!--                    <form method="POST" th:action="@{remove_user/{id}(id=${user.getId()})}" th:object="${user}">-->
+            <!--                        <input type="submit" value="Delete User">-->
+            <!--                    </form>-->
+            <!--                </td>-->
+            <!--            </tr>-->
+            <!--        </table>-->
+        </div>
+    </div>
+    <br/>
+    <a th:href="@{create_user}">Create new user</a>
+    <br/>
+    <a th:href="@{/user}">User info</a>
+    <br/>
+    <a th:href="@{/logout}">Logout</a>
+    <br/>
 </body>
 </html>
