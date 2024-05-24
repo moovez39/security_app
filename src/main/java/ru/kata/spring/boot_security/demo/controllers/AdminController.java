@@ -31,6 +31,9 @@ public class AdminController {
     @GetMapping("/")
     public String adminPage(Model model) {
         model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("roles", roleRepo.findAll());
+        model.addAttribute("new_user", new User());
+
         return "admin/test";
     }
 
