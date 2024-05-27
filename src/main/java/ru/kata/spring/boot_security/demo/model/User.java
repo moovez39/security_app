@@ -24,7 +24,7 @@ public class User implements UserDetails {
     private String username;
 
     @Column
-    @Size(min = 6, max = 64, message = "Password should contains at least 6 characters")
+//    @Size(min = 6, max = 64, message = "Password should contains at least 6 characters")
     private String password;
 
     @Column(nullable = false)
@@ -47,6 +47,7 @@ public class User implements UserDetails {
         this.password = password;
         this.sex = sex;
         this.email = email;
+        this.roles = roles;
     }
 
     public User() {

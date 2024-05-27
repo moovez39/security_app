@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.model.UserEditDTO;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
@@ -33,6 +34,9 @@ public class AdminController {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("roles", roleRepo.findAll());
         model.addAttribute("new_user", new User());
+        model.addAttribute("usersForm", new UserEditDTO(userService.getAllUsers()));
+        UserEditDTO users = (UserEditDTO)model.getAttribute("usersForm");
+        System.out.println(users.getUsers());
 
         return "admin/test";
     }
@@ -40,7 +44,7 @@ public class AdminController {
     @GetMapping("/user/{id}")
     public String userInfo(@PathVariable Long id, Model model) {
         model.addAttribute("roles", roleRepo.findAll());
-        model.addAttribute("user", userService.getUser(id));
+        model.addAttribute("userInfo", userService.getUser(id));
         User user = (User) model.getAttribute("user");
         System.out.println(user);
         return "/admin/user_info";
@@ -54,15 +58,11 @@ public class AdminController {
         return "admin/create_user";
     }
 
-    @PostMapping("/user/{id}")
-    public String editUser(@Valid User editedUser,
-                           BindingResult bindingResult, @PathVariable Long id,@ModelAttribute("roles") List<Role> roles, Model model) {
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("roles", roleRepo.findAll());
-            return "/admin/user_info";
-        }
-        userService.saveUser(editedUser);
+    @PostMapping("/edit_user")
+    public String editUser( User editedUser, Model model, @ModelAttribute UserEditDTO userEditDTO) {
+        userService.saveAllUsers(userEditDTO.getUsers());
+        model.addAttribute("roles", roleRepo.findAll());
+//        userService.saveUser(editedUser);
         return "redirect:/admin/";
 
     }

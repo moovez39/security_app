@@ -72,13 +72,14 @@ public class UserServiceImpl implements UserService {
             user.addRole(roleRepository.getById(1L));
             userRepository.save(user);
         } else {
-            if(userFromDB.get().getPassword().equals(user.getPassword())) {
+            if (userFromDB.get().getPassword().equals(user.getPassword())) {
                 userRepository.save(user);
-            }else {
+            } else {
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
                 userRepository.save(user);
             }
         }
+
     }
 
     public void deleteUser(Long id) {
@@ -93,4 +94,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    public void saveAllUsers(List<User> users) {
+        userRepository.saveAll(users);
+    }
 }
